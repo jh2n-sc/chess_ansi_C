@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+// this program is at its very early stages..
+// only blacks pawn can be moved
 void displayBoard(int board[8][8]);
 void initializeBoard(int board[8][8]);
 void move(int board[8][8], int x1, int y1, int x2, int y2);
