@@ -19,7 +19,7 @@ int main(void) {
     initializeBoard(board);
     while(1) {
         printf("x1 = %i | y1 = %i | x2 = %i | y2 = %i\n", x1, y1, x2, y2);
-        printf("Target: %i\n", board[y1][x1]);
+        printf("Target: %i\n", board[y2][x2]);
         displayBoard(board);
         if(turn == 0) {
             printf("White's turn\n");
@@ -31,7 +31,13 @@ int main(void) {
         scanf("%2s %2s", pos, mov);
         converter(&y1, &x1, &y2, &x2, pos, mov);
         while(move(board, y1, x1, y2, x2, turn) != 0) {
-
+            printf("Invalid!!!\n");
+            printf("Target: mov%i\n", board[y2][x2]);
+            printf("Target: pos%i\n", board[y1][x1]);
+            printf("Enter your move(ex: e2 e4): ");
+            scanf("%2s %2s", pos, mov);
+            converter(&y1, &x1, &y2, &x2, pos, mov);
+            //board[y1][x1] = 0;
         }
         if(turn == 0) {
             turn = 1;
@@ -107,8 +113,33 @@ void displayBoard(int board[8][8]) {
             }
             printf("  ");
         }
+        if(i == 0) {
+            printf("8");
+        }
+        else if(i == 1) {
+            printf("7");
+        }
+        else if(i == 2) {
+            printf("6");
+        }
+        else if(i == 3) {
+            printf("5");
+        }
+        else if(i == 4) {
+            printf("4");
+        }
+        else if(i == 5) {
+            printf("3");
+        }
+        else if(i == 6) {
+            printf("2");
+        }
+        else if(i == 7) {
+            printf("1");
+        }
         printf("\n");
     }
+    printf("a  b  c  d  e  f  g  h\n\n");
 }
 void initializeBoard(int board[8][8]) {
     for(int i = 0; i < 8; i++) {
@@ -155,6 +186,7 @@ void initializeBoard(int board[8][8]) {
 }
 int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
     int suc = 0;
+    int ver = 0;
     if(turn == 1) {
         if(board[y1][x1] == 1) {
             
@@ -165,9 +197,46 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
         if(board[y1][x1] == 3) {
 
         }
+        //black bishop
         if(board[y1][x1] == 4) {
-
+            for(int i = x1 + 1; i < 8; i++) {
+                for(int j = y1 - 1; j > -1; j--) {
+                    if(i == x2 && j == y2) {
+                        ver = 1;
+                    }
+                }
+            }
+            for(int i = x1 - 1; i > -1 ; i--) {
+                for(int j = y1 + 1; j < 8; j++) {
+                    if(i == x2 && j == y2) {
+                        ver = 1;
+                    }
+                }
+            }
+            for(int i = x1 + 1; i < 8; i++) {
+                for(int j = y1 + 1; j < 8 ; j++) {
+                    if(i == x2 && j == y2) {
+                        ver = 1;
+                    }
+                }
+            }
+            for(int i = x1 - 1; i > -1 ; i--) {
+                for(int j = y1 - 1; j > -1; j--) {
+                    if(i == x2 && j == y2) {
+                        ver = 1;
+                    }
+                }
+            }
+            if(ver == 1) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 4;
+            } 
+            else {
+                suc = 1;
+            }
+            ver = 0;
         }
+        //black knight
         if(board[y1][x1] == 5) {
             if((x1 == x2 + 2 || x1 == x2 + 1 || x1 == x2 - 2 || x1 == x2 - 1)) {
                 if((y1 == y2 + 2 || y1 == y2 + 1 || y1 == y2 - 2 || y1 == y2 - 1)) {
@@ -218,9 +287,46 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
         else if(board[y1][x1] == 9) {
 
         }
+        //white bishop
         else if(board[y1][x1] == 10) {
-
+            for(int i = x1 + 1; i < 8; i++) {
+                for(int j = y1 - 1; j > -1; j--) {
+                    if(i == x2 && j == y2) {
+                        ver = 1;
+                    }
+                }
+            }
+            for(int i = x1 - 1; i > -1 ; i--) {
+                for(int j = y1 + 1; j < 8; j++) {
+                    if(i == x2 && j == y2) {
+                        ver = 1;
+                    }
+                }
+            }
+            for(int i = x1 + 1; i < 8; i++) {
+                for(int j = y1 + 1; j < 8 ; j++) {
+                    if(i == x2 && j == y2) {
+                        ver = 1;
+                    }
+                }
+            }
+            for(int i = x1 - 1; i > -1 ; i--) {
+                for(int j = y1 - 1; j > -1; j--) {
+                    if(i == x2 && j == y2) {
+                        ver = 1;
+                    }
+                }
+            }
+            if(ver == 1) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 10;
+            } 
+            else {
+                suc = 1;
+            }
+            ver = 0;
         }
+        //white knight
         else if(board[y1][x1] == 11) {
             if((x1 == x2 + 2 || x1 == x2 + 1 || x1 == x2 - 2 || x1 == x2 - 1)) {
                 if((y1 == y2 + 2 || y1 == y2 + 1 || y1 == y2 - 2 || y1 == y2 - 1)) {
@@ -801,6 +907,6 @@ int converter(int *y1, int *x1, int *y2, int *x2, char *pos, char *mov) {
         printf("Invalid position!\n");
         return 0;
     }
-    return 1;
+    return 0;
 
 }
