@@ -191,40 +191,84 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
         if(board[y1][x1] == 1) {
             
         }
+        //black queen
         if(board[y1][x1] == 2) {
-
+            for(int i = x1 + 1, j = y1 - 1; i < 8 && j > -1; i++, j--) {
+                if(x2 == i && y2 == j) {
+                    ver = 1;
+                }
+            }
+            for(int i = y1 + 1, j = x1 - 1; i < 8 && j > -1; i++, j--) {
+                if(y2 == i && x2 == j) {
+                    ver = 1;
+                }
+            }
+            for(int i = y1 + 1, j = x1 + 1; i < 8 && j < 8; i++, j++) {
+                if(y2 == i && x2 == j) {
+                    ver = 1;
+                }
+            }
+            for(int i = y1 - 1, j = x1 - 1; i > -1 && j > -1; i--, j--) {
+                if(y2 == i && x2 == j) {
+                    ver = 1;
+                }
+            }
+            if(ver == 1) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 2;
+            } 
+            else if(x1 == x2 && y2 != y1 && (y2 >= 0 && y2 < 8)) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 2;
+                ver = 1;
+            }
+            else if(y1 == y2 && x2 != x1 && (x2 >= 0 && x2 < 8)) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 2;
+                ver = 1;
+            }
+            else {
+                ver = 0;
+            }
+            if(ver == 0) {
+                suc = 1;
+            }
+            ver = 0;    
         }
+        //black rook
         if(board[y1][x1] == 3) {
-
+            if(x1 == x2 && y2 != y1 && (y2 >= 0 && y2 < 8)) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 3;
+            }
+            else if(y1 == y2 && x2 != x1 && (x2 >= 0 && x2 < 8)) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 3;
+            }
+            else {
+                suc = 1;
+            }
         }
         //black bishop
         if(board[y1][x1] == 4) {
-            for(int i = x1 + 1; i < 8; i++) {
-                for(int j = y1 - 1; j > -1; j--) {
-                    if(i == x2 && j == y2) {
-                        ver = 1;
-                    }
+            for(int i = x1 + 1, j = y1 - 1; i < 8 && j > -1; i++, j--) {
+                if(x2 == i && y2 == j) {
+                    ver = 1;
                 }
             }
-            for(int i = x1 - 1; i > -1 ; i--) {
-                for(int j = y1 + 1; j < 8; j++) {
-                    if(i == x2 && j == y2) {
-                        ver = 1;
-                    }
+            for(int i = y1 + 1, j = x1 - 1; i < 8 && j > -1; i++, j--) {
+                if(y2 == i && x2 == j) {
+                    ver = 1;
                 }
             }
-            for(int i = x1 + 1; i < 8; i++) {
-                for(int j = y1 + 1; j < 8 ; j++) {
-                    if(i == x2 && j == y2) {
-                        ver = 1;
-                    }
+            for(int i = y1 + 1, j = x1 + 1; i < 8 && j < 8; i++, j++) {
+                if(y2 == i && x2 == j) {
+                    ver = 1;
                 }
             }
-            for(int i = x1 - 1; i > -1 ; i--) {
-                for(int j = y1 - 1; j > -1; j--) {
-                    if(i == x2 && j == y2) {
-                        ver = 1;
-                    }
+            for(int i = y1 - 1, j = x1 - 1; i > -1 && j > -1; i--, j--) {
+                if(y2 == i && x2 == j) {
+                    ver = 1;
                 }
             }
             if(ver == 1) {
@@ -258,8 +302,19 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
         if(board[y1][x1] == 13) {
 
         }
+        //unmoved black rook
         if(board[y1][x1] == 14) {
-
+            if(x1 == x2 && y2 != y1 && (y2 >= 0 && y2 < 8)) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 3;
+            }
+            else if(y1 == y2 && x2 != x1 && (x2 >= 0 && x2 < 8)) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 3;
+            }
+            else {
+                suc = 1;
+            }
         }
         if(board[y1][x1] == 15) {
                 if((y1 == (y2 - 1) && x1 == x2)) {
@@ -281,40 +336,83 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
         if(board[y1][x1] == 7) {
 
         }
+        //white queen
         else if(board[y1][x1] == 8) {
-
+            for(int i = x1 + 1, j = y1 - 1; i < 8 && j > -1; i++, j--) {
+                if(x2 == i && y2 == j) {
+                    ver = 1;
+                }
+            }
+            for(int i = y1 + 1, j = x1 - 1; i < 8 && j > -1; i++, j--) {
+                if(y2 == i && x2 == j) {
+                    ver = 1;
+                }
+            }
+            for(int i = y1 + 1, j = x1 + 1; i < 8 && j < 8; i++, j++) {
+                if(y2 == i && x2 == j) {
+                    ver = 1;
+                }
+            }
+            for(int i = y1 - 1, j = x1 - 1; i > -1 && j > -1; i--, j--) {
+                if(y2 == i && x2 == j) {
+                    ver = 1;
+                }
+            }
+            if(ver == 1) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 8;
+            } 
+            else if(x1 == x2 && y2 != y1 && (y2 >= 0 && y2 < 8)) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 8;
+                ver = 1;
+            }
+            else if(y1 == y2 && x2 != x1 && (x2 >= 0 && x2 < 8)) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 8;
+                ver = 1;
+            }
+            else {
+                ver = 0;
+            }
+            if(ver == 0) {
+                suc = 1;
+            }
+            ver = 0;   
         }
         else if(board[y1][x1] == 9) {
-
+            if(x1 == x2 && y2 != y1 && (y2 >= 0 && y2 < 8)) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 9;
+            }
+            else if(y1 == y2 && x2 != x1 && (x2 >= 0 && x2 < 8)) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 9;
+            }
+            else {
+                suc = 1;
+            }
         }
         //white bishop
         else if(board[y1][x1] == 10) {
-            for(int i = x1 + 1; i < 8; i++) {
-                for(int j = y1 - 1; j > -1; j--) {
-                    if(i == x2 && j == y2) {
-                        ver = 1;
-                    }
+            for(int i = x1 + 1, j = y1 - 1; i < 8 && j > -1; i++, j--) {
+                if(x2 == i && y2 == j) {
+                    ver = 1;
                 }
             }
-            for(int i = x1 - 1; i > -1 ; i--) {
-                for(int j = y1 + 1; j < 8; j++) {
-                    if(i == x2 && j == y2) {
-                        ver = 1;
-                    }
+            for(int i = y1 + 1, j = x1 - 1; i < 8 && j > -1; i++, j--) {
+                if(y2 == i && x2 == j) {
+                    ver = 1;
                 }
             }
-            for(int i = x1 + 1; i < 8; i++) {
-                for(int j = y1 + 1; j < 8 ; j++) {
-                    if(i == x2 && j == y2) {
-                        ver = 1;
-                    }
+            for(int i = y1 + 1, j = x1 + 1; i < 8 && j < 8; i++, j++) {
+                if(y2 == i && x2 == j) {
+                    ver = 1;
                 }
             }
-            for(int i = x1 - 1; i > -1 ; i--) {
-                for(int j = y1 - 1; j > -1; j--) {
-                    if(i == x2 && j == y2) {
-                        ver = 1;
-                    }
+            for(int i = y1 - 1, j = x1 - 1; i > -1 && j > -1; i--, j--) {
+                if(y2 == i && x2 == j) {
+                    ver = 1;
                 }
             }
             if(ver == 1) {
@@ -348,9 +446,21 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
         else if(board[y1][x1] == 16) {
 
         }
+        //unmoved white rook
         else if(board[y1][x1] == 17) {
-
+            if(x1 == x2 && y2 != y1 && (y2 >= 0 && y2 < 8)) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 9;
+            }
+            else if(y1 == y2 && x2 != x1 && (x2 >= 0 && x2 < 8)) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 9;
+            }
+            else {
+                suc = 1;
+            }
         }
+        //unmoved white pawn
         else if(board[y1][x1] == 18) {
                 if((y1 == (y2 + 1) && x1 == x2)) {
                     board[y1][x1] = 0;
