@@ -217,21 +217,21 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
     if(turn == 1) {
         //black king
         if(board[y1][x1] == 1) {
-            for(int i = - 1; i < 2; i++) {
-                int ii = x1 + i;
-                for(int j = - 1; j < 2; j++) {
-                    int jj = y1 + j;
-                    if(x2 == jj && y2 == ii) {
-                        board[y1][x1] = 0;
-                        board[y2][x2] = 1;
+            for(int i = -1; i < 2; i++) {
+                for(int j = -1; j < 2; j++) {
+                    if(x2 == x1 + i && y2 == y1 + j) {
                         ver = 1;
                     }
                 }
             }
-            if(ver == 0) {
+            if(ver == 1) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 1;
+            }
+            else if(ver == 0){
                 suc = 1;
             }
-            ver = 0;
+            ver = 0;;
             
         }
         //black queen
@@ -349,18 +349,18 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
         }
         //unmoved black king
         if(board[y1][x1] == 7) {
-            for(int i = - 1; i < 2; i++) {
-                int ii = x1 + i;
-                for(int j = - 1; j < 2; j++) {
-                    int jj = y1 + j;
-                    if(x2 == jj && y2 == ii) {
-                        board[y1][x1] = 0;
-                        board[y2][x2] = 1;
+            for(int i = -1; i < 2; i++) {
+                for(int j = -1; j < 2; j++) {
+                    if(x2 == x1 + i && y2 == y1 + j) {
                         ver = 1;
-                    }   
+                    }
                 }
             }
-            if(ver == 0) {
+            if(ver == 1) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 1;
+            }
+            else if(ver == 0){
                 suc = 1;
             }
             ver = 0;
@@ -399,19 +399,18 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
     else if(turn == 0) {
         //white king
         if(board[y1][x1] == 21) {
-            for(int i = - 1; i < 2; i++) {
-                int ii = x1 + i;
-                for(int j = - 1; j < 2; j++) {
-                    int jj = y1 + j;
-                    if(x2 == jj && y2 == ii) {
-                        board[y1][x1] = 0;
-                        board[y2][x2] = 21;
+            for(int i = -1; i < 2; i++) {
+                for(int j = -1; j < 2; j++) {
+                    if(x2 == x1 + i && y2 == y1 + j) {
                         ver = 1;
                     }
                 }
-                
             }
-            if(ver == 0) {
+            if(ver == 1) {
+                board[y1][x1] = 0;
+                board[y2][x2] = 21;
+            }
+            else if(ver == 0){
                 suc = 1;
             }
             ver = 0;
@@ -529,20 +528,15 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
         else if(board[y1][x1] == 27) {
             for(int i = -1; i < 2; i++) {
                 for(int j = -1; j < 2; j++) {
-                    if(x2 == x1 + i && y2 == y1 + i) {
+                    if(x2 == x1 + i && y2 == y1 + j) {
                         ver = 1;
                         board[0][0] = 21;
                     }
-                    //board[i+y1][j+x1] = 25;
                 }
             }
-            /*if(ver == 0) {
-                suc = 1;
-            }*/
             if(ver == 1) {
                 board[y1][x1] = 0;
-                board[y2][x1] = 21;
-                board[7][7] = 21;
+                board[y2][x2] = 21;
             }
             else if(ver == 0){
                 suc = 1;
