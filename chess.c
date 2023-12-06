@@ -2,16 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-// this program is at its very early stages..
+// this program is at its very early stages...
 // only blacks pawn can be moved
 void displayBoard(int board[8][8]);
 void initializeBoard(int board[8][8]);
 int move(int board[8][8], int y1, int x1, int y2, int x2, int turn);
-
-
 int converter(int *y1, int *x1, int *y2, int *x2, char *pos, char *mov);
+int moveChecker(int board[8][8], int wsboard[10][10], int bsboard[10][10], int turn, int x1, int y1, int x2, int y2);
+int shadowBoardInit(int board[8][8], int wsboard[8][8], int bsboard[8][8], int x1, int y1, int x2 ,int y2, int turn);
+
 int main(void) {
     int board[8][8];
+    int wsboard[10][10];
+    int bsboard[10][10];
     int y1 = 0, x1 = 0, y2 = 0, x2 = 0;
     char pos[5];
     char mov[5];
@@ -49,8 +52,6 @@ int main(void) {
     }
     return 0;
 }
-
-
 void displayBoard(int board[8][8]) {
     for(int i = 0; i < 8; i++) {
         for(int j = 0; j < 8; j++) {
@@ -76,39 +77,45 @@ void displayBoard(int board[8][8]) {
                 printf("♟︎");
             }
             else if(board[i][j] == 7) {
-                printf("♔");
-            }
-            else if(board[i][j] == 8) {
-                printf("♕");
-            }
-            else if(board[i][j] == 9) {
-                printf("♖");
-            }
-            else if(board[i][j] == 10) {
-                printf("♗");
-            }
-            else if(board[i][j] == 11) {
-                printf("♘");
-            }
-            else if(board[i][j] == 12) {
-                printf("♙");
-            }
-            else if(board[i][j] == 13) {
                 printf("♚");
             }
-            else if(board[i][j] == 14) {
+            else if(board[i][j] == 8) {
                 printf("♜");
             }
-            else if(board[i][j] == 15) {
+            else if(board[i][j] == 9) {
                 printf("♟︎");
             }
-            else if(board[i][j] == 16) {
+            else if(board[i][j] == 10) {
+                printf("♟︎");
+            }
+            else if(board[i][j] == 21) {
                 printf("♔");
             }
-            else if(board[i][j] == 17) {
+            else if(board[i][j] == 22) {
+                printf("♕");
+            }
+            else if(board[i][j] == 23) {
                 printf("♖");
             }
-            else if(board[i][j] == 18) {
+            else if(board[i][j] == 24) {
+                printf("♗");
+            }
+            else if(board[i][j] == 25) {
+                printf("♘");
+            }
+            else if(board[i][j] == 26) {
+                printf("♙");
+            }
+            else if(board[i][j] == 27) {//unmoved king
+                printf("♔");
+            }
+            else if(board[i][j] == 28) {//unmoved rook
+                printf("♖");
+            }
+            else if(board[i][j] == 29) {//unmoved pawn
+                printf("♙");
+            }
+            else if(board[i][j] == 30) {//en passant pawn
                 printf("♙");
             }
             printf("  ");
@@ -147,48 +154,84 @@ void initializeBoard(int board[8][8]) {
             board[i][j] = 0;
         }
     }
-    board[0][0] = 14;
+    // 20 > are black's pieces
+    // 20 < are white's pieces
+    board[0][0] = 8;
     board[0][1] = 5;
     board[0][2] = 4;
     board[0][3] = 2;
-    board[0][4] = 13;
+    board[0][4] = 7;
     board[0][5] = 4;
     board[0][6] = 5;
-    board[0][7] = 14;
+    board[0][7] = 8;
 
-    board[1][0] = 15;
-    board[1][1] = 15;
-    board[1][2] = 15;
-    board[1][3] = 15;
-    board[1][4] = 15;
-    board[1][5] = 15;
-    board[1][6] = 15;
-    board[1][7] = 15;
+    board[1][0] = 9;
+    board[1][1] = 9;
+    board[1][2] = 9;
+    board[1][3] = 9;
+    board[1][4] = 9;
+    board[1][5] = 9;
+    board[1][6] = 9;
+    board[1][7] = 9;
+    // White's board
+    board[6][0] = 29;
+    board[6][1] = 29;
+    board[6][2] = 29;
+    board[6][3] = 29;
+    board[6][4] = 29;
+    board[6][5] = 29;
+    board[6][6] = 29;
+    board[6][7] = 29;
 
-    board[6][0] = 18;
-    board[6][1] = 18;
-    board[6][2] = 18;
-    board[6][3] = 18;
-    board[6][4] = 18;
-    board[6][5] = 18;
-    board[6][6] = 18;
-    board[6][7] = 18;
-
-    board[7][0] = 17;
-    board[7][1] = 11;
-    board[7][2] = 10;
-    board[7][3] = 8;
-    board[7][4] = 16;
-    board[7][5] = 10;
-    board[7][6] = 11;
-    board[7][7] = 17;
+    board[7][0] = 28;
+    board[7][1] = 25;
+    board[7][2] = 24;
+    board[7][3] = 22;
+    board[7][4] = 27;
+    board[7][5] = 24;
+    board[7][6] = 25;
+    board[7][7] = 28;
     
 }
 int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
     int suc = 0;
     int ver = 0;
+    if(turn == 0) {
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                if(board[j][i] == 30) {
+                    board[j][i] = 26;
+                }
+            }
+        }
+    }
+    else if(turn == 1) {
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                if(board[j][i] == 10) {
+                    board[j][i] = 6;
+                }
+            }
+        }
+    }
     if(turn == 1) {
+        //black king
         if(board[y1][x1] == 1) {
+            for(int i = - 1; i < 2; i++) {
+                int ii = x1 + i;
+                for(int j = - 1; j < 2; j++) {
+                    int jj = y1 + j;
+                    if(x2 == jj && y2 == ii) {
+                        board[y1][x1] = 0;
+                        board[y2][x2] = 1;
+                        ver = 1;
+                    }
+                }
+            }
+            if(ver == 0) {
+                suc = 1;
+            }
+            ver = 0;
             
         }
         //black queen
@@ -289,21 +332,41 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
                 }
             }
         }
+        //black pawn
         if(board[y1][x1] == 6) {
                 if((y1 == (y2 - 1) && x1 == x2)) {
                 board[y1][x1] = 0;
                 board[y2][x2] = 6;
                 }
+                else if((board[y1][x1+1] == 19 || board[y1][x1-1] == 19)&&((y1 == y2 - 1 && ((x1 == x2 - 1)||(x1 == x2 + 1))))) {
+                    board[y2-1][x2] = 0;
+                    board[y2][x2] = 6;    
+                }
                 else {
-                    printf("Invalid\n");
+                    suc = 1;
                 }
                 printf("yahoo\n");
         }
-        if(board[y1][x1] == 13) {
-
+        //unmoved black king
+        if(board[y1][x1] == 7) {
+            for(int i = - 1; i < 2; i++) {
+                int ii = x1 + i;
+                for(int j = - 1; j < 2; j++) {
+                    int jj = y1 + j;
+                    if(x2 == jj && y2 == ii) {
+                        board[y1][x1] = 0;
+                        board[y2][x2] = 1;
+                        ver = 1;
+                    }   
+                }
+            }
+            if(ver == 0) {
+                suc = 1;
+            }
+            ver = 0;
         }
         //unmoved black rook
-        if(board[y1][x1] == 14) {
+        if(board[y1][x1] == 8) {
             if(x1 == x2 && y2 != y1 && (y2 >= 0 && y2 < 8)) {
                 board[y1][x1] = 0;
                 board[y2][x2] = 3;
@@ -316,14 +379,15 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
                 suc = 1;
             }
         }
-        if(board[y1][x1] == 15) {
+        //unmoved black pawn
+        if(board[y1][x1] == 9) {
                 if((y1 == (y2 - 1) && x1 == x2)) {
                     board[y1][x1] = 0;
                     board[y2][x2] = 6;
                 }
                 else if((y1 == (y2 - 2) && x1 == x2)) {
                     board[y1][x1] = 0;
-                    board[y2][x2] = 6;
+                    board[y2][x2] = 10;
                 }
                 else {
                     printf("Invalid\n");
@@ -332,12 +396,28 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
         }
         
     }
-    if(turn == 0) {
-        if(board[y1][x1] == 7) {
-
+    else if(turn == 0) {
+        //white king
+        if(board[y1][x1] == 21) {
+            for(int i = - 1; i < 2; i++) {
+                int ii = x1 + i;
+                for(int j = - 1; j < 2; j++) {
+                    int jj = y1 + j;
+                    if(x2 == jj && y2 == ii) {
+                        board[y1][x1] = 0;
+                        board[y2][x2] = 21;
+                        ver = 1;
+                    }
+                }
+                
+            }
+            if(ver == 0) {
+                suc = 1;
+            }
+            ver = 0;
         }
         //white queen
-        else if(board[y1][x1] == 8) {
+        else if(board[y1][x1] == 22) {
             for(int i = x1 + 1, j = y1 - 1; i < 8 && j > -1; i++, j--) {
                 if(x2 == i && y2 == j) {
                     ver = 1;
@@ -360,16 +440,16 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
             }
             if(ver == 1) {
                 board[y1][x1] = 0;
-                board[y2][x2] = 8;
+                board[y2][x2] = 22;
             } 
             else if(x1 == x2 && y2 != y1 && (y2 >= 0 && y2 < 8)) {
                 board[y1][x1] = 0;
-                board[y2][x2] = 8;
+                board[y2][x2] = 22;
                 ver = 1;
             }
             else if(y1 == y2 && x2 != x1 && (x2 >= 0 && x2 < 8)) {
                 board[y1][x1] = 0;
-                board[y2][x2] = 8;
+                board[y2][x2] = 22;
                 ver = 1;
             }
             else {
@@ -380,21 +460,22 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
             }
             ver = 0;   
         }
-        else if(board[y1][x1] == 9) {
+        //white rook
+        else if(board[y1][x1] == 23) {
             if(x1 == x2 && y2 != y1 && (y2 >= 0 && y2 < 8)) {
                 board[y1][x1] = 0;
-                board[y2][x2] = 9;
+                board[y2][x2] = 23;
             }
             else if(y1 == y2 && x2 != x1 && (x2 >= 0 && x2 < 8)) {
                 board[y1][x1] = 0;
-                board[y2][x2] = 9;
+                board[y2][x2] = 23;
             }
             else {
                 suc = 1;
             }
         }
         //white bishop
-        else if(board[y1][x1] == 10) {
+        else if(board[y1][x1] == 24) {
             for(int i = x1 + 1, j = y1 - 1; i < 8 && j > -1; i++, j--) {
                 if(x2 == i && y2 == j) {
                     ver = 1;
@@ -417,7 +498,7 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
             }
             if(ver == 1) {
                 board[y1][x1] = 0;
-                board[y2][x2] = 10;
+                board[y2][x2] = 24;
             } 
             else {
                 suc = 1;
@@ -425,59 +506,78 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
             ver = 0;
         }
         //white knight
-        else if(board[y1][x1] == 11) {
+        else if(board[y1][x1] == 25) {
             if((x1 == x2 + 2 || x1 == x2 + 1 || x1 == x2 - 2 || x1 == x2 - 1)) {
                 if((y1 == y2 + 2 || y1 == y2 + 1 || y1 == y2 - 2 || y1 == y2 - 1)) {
                     board[y1][x1] = 0;
-                    board[y2][x2] = 11;
+                    board[y2][x2] = 25;
                 }
             }
         }
-        else if(board[y1][x1] == 12) {
+        //white pawn
+        else if(board[y1][x1] == 26) {
                 if((y1 == (y2 + 1) && x1 == x2)) {
                 board[y1][x1] = 0;
-                board[y2][x2] = 12;
+                board[y2][x2] = 26;
                 }
                 else {
                     printf("Invalid\n");
                 }
                 printf("yahoo\n");
         }
-        else if(board[y1][x1] == 16) {
-
+        //unmoved white king
+        else if(board[y1][x1] == 27) {
+            for(int i = -1; i < 2; i++) {
+                for(int j = -1; j < 2; j++) {
+                    if(x2 == x1 + i && y2 == y1 + i) {
+                        ver = 1;
+                        board[0][0] = 21;
+                    }
+                    //board[i+y1][j+x1] = 25;
+                }
+            }
+            /*if(ver == 0) {
+                suc = 1;
+            }*/
+            if(ver == 1) {
+                board[y1][x1] = 0;
+                board[y2][x1] = 21;
+                board[7][7] = 21;
+            }
+            else if(ver == 0){
+                suc = 1;
+            }
+            ver = 0;
         }
         //unmoved white rook
-        else if(board[y1][x1] == 17) {
+        else if(board[y1][x1] == 28) {
             if(x1 == x2 && y2 != y1 && (y2 >= 0 && y2 < 8)) {
                 board[y1][x1] = 0;
-                board[y2][x2] = 9;
+                board[y2][x2] = 28;
             }
             else if(y1 == y2 && x2 != x1 && (x2 >= 0 && x2 < 8)) {
                 board[y1][x1] = 0;
-                board[y2][x2] = 9;
+                board[y2][x2] = 28;
             }
             else {
                 suc = 1;
             }
         }
         //unmoved white pawn
-        else if(board[y1][x1] == 18) {
+        else if(board[y1][x1] == 29) {
                 if((y1 == (y2 + 1) && x1 == x2)) {
                     board[y1][x1] = 0;
-                    board[y2][x2] = 12;
+                    board[y2][x2] = 29;
                 }
                 else if((y1 == (y2 + 2) && x1 == x2)) {
                     board[y1][x1] = 0;
-                    board[y2][x2] = 12;
+                    board[y2][x2] = 30;
                 }
                 else {
                     printf("Invalid\n");
                 }
                 printf("yahoo\n");
         }
-        else {
-        }
-        
     }
     return suc;
 }
@@ -1018,5 +1118,255 @@ int converter(int *y1, int *x1, int *y2, int *x2, char *pos, char *mov) {
         return 0;
     }
     return 0;
+}
+int shadowBoardInit(int board[8][8], int wsboard[8][8], int bsboard[8][8], int x1, int y1, int x2, int y2, int turn) {
+    int retVal = 0;
+    int breakVal = 0;
+    int queenVal = 0;
+    for(int i = 0; i < 8; i++) {
+        for(int j = 0; j < 8; j++) {
+            if(board[i][j] > 0 && board[i][j] < 11) {
+                if(board[i][j] == 1){
+                    
+                }
+                else if(board[i][j] == 2) {
+                    if(queenVal == 0) {
+                        for(int x = j + 1, y = i - 1; (x < 8 && y > -1) && breakVal == 0; x++, y--) {
+                            if(x2 == x && y2 == y) {
+                                if(board[y][x] == 0) {
+                                    bsboard[y][x] = -1;
+                                }
+                                else if(board[y][x] > 0) {
+                                    bsboard[y][x] = -2;
+                                    breakVal = 1;
+                                }
+                            }
+                        }
+                        for(int x = i + 1, y = j - 1; (x < 8 && y > -1) && breakVal == 0; x++, y--) {
+                            if(y2 == x && x2 == y) {
+                                if(board[y][x] == 0) {
+                                    bsboard[y][x] = -1;
+                                }
+                                else if(board[y][x] > 0) {
+                                    bsboard[y][x] = -2;
+                                    breakVal = 1;
+                                }
+                            }
+                        }
+                        for(int x = i + 1, y = j + 1; (x < 8 && y < 8) && breakVal == 0; x++, y++) {
+                            if(y2 == x && x2 == y) {
+                                if(board[y][x] == 0) {
+                                    bsboard[y][x] = -1;
+                                }
+                                else if(board[y][x] > 0) {
+                                    bsboard[y][x] = -2;
+                                    breakVal = 1;
+                                }
+                            }
+                        }
+                        for(int x = i - 1, y = j - 1; (x > -1 && y > -1) && breakVal == 0; x--, y--) {
+                            if(y2 == x && x2 == j) {
+                                if(board[y][x] == 0) {
+                                    bsboard[y][x] = -1;
+                                }
+                                else if(board[y][x] > 0) {
+                                    bsboard[y][x] = -2;
+                                    breakVal = 1;
+                                }
+                            }
+                        }
+                        queenVal = 1;
+                    }
+                    for(int x = 0; x < 8 && breakVal == 0; x++) {
+                        if(board[i][x] == 0) {
+                            bsboard[i][x] = -1;
+                        }
+                        else if(board[i][x] > 0) {
+                            bsboard[i][x] = -2;
+                            breakVal = 1;
+                        }
+                    }
+                    breakVal = 0;
+                    for(int y = 0; y < 8 && breakVal == 0; y++) {
+                        if(board[y][j] == 0) {
+                            bsboard[y][j] = -1;
+                        }
+                        else if(board[y][j] > 0) {
+                            bsboard[y][j] = -2;
+                            breakVal = 0;
+                        }
+                    }
 
+                    
+                    bsboard[i][j] = -3;
+                    breakVal = 0;
+                    queenVal = 0;
+                }
+                else if(board[i][j] == 3) {
+                    for(int x = 0; x < 8 && breakVal == 0; x++) {
+                        if(board[i][x] == 0) {
+                            bsboard[i][x] == -1;
+                        }
+                        else if(board[i][x] > 0) {
+                            bsboard[i][x] == -2;
+                            breakVal = 1;
+                        }
+                    }
+                    breakVal = 0;
+                    for(int y = 0; y < 8 && breakVal == 0; y++) {
+                        if(board[y][j] == 0) {
+                            bsboard[y][j] == -1;
+                        }
+                        else if(board[y][j] > 0) {
+                            bsboard[y][j] == -2;
+                            breakVal = 1;
+                        }
+                    }
+                    bsboard[i][j] = -3;
+                    breakVal = 0;
+                }
+                else if(board[i][j] == 4) {
+                    
+                }
+                else if(board[i][j] == 5) {
+                    
+                }
+                else if(board[i][j] == 6) {
+                    
+                }
+                else if(board[i][j] == 7) {
+                    
+                }
+                else if(board[i][j] == 8) {
+                    
+                }
+                else if(board[i][j] == 9) {
+                    
+                }
+                else if(board[i][j] == 10) {
+                    
+                }
+
+            }
+            else if(board[i][j] > 11) {
+            }
+        }
+    }
+    return retVal;
+}
+int moveChecker(int board[8][8], int wsboard[10][10], int bsboard[10][10], int turn, int x1, int y1, int x2, int y2) {
+    //turn = 0 means its white to move
+    //turn = 1 means otherwise
+    int *movesBuffer;
+    int retVal = 0; //1 means success, 0 means failure
+    if(turn == 0) {
+        if(board[y1][x1] == 12) { //white moved pawn checker
+            //move pawn 1 square
+            if(x1 == x2 && y1 == y2 + 1){
+                if(board[y2][x2] == 0) {
+                    retVal = 0;
+                }
+                else {
+                retVal = 1;
+                }
+            }
+            //capture pawn
+            else if((x1 - x2 == 1 || x1 - x2 == - 1) && y1 == y2 + 1) {
+                if(board[y2][x2] > 0 &&(board[y2][x2] < 7 || (board[y2][x2] < 16 && board[y2][x2] > 12))) {
+                retVal = 1;
+                }
+            }
+            //en passant pawn
+            else if((board[y1][x1+1] == 19 || board[y1][x1-1] == 19)&&((y1 == y2 + 1 && ((x1 == x2 - 1)||(x1 == x2 + 1))))) {
+                retVal = 1;
+            }
+            else {
+                retVal = 0;
+            }
+        }
+        else if(board[y1][x1] == 18) { //white unmoved pawn checker
+            if(x1 == x2 && y1 == y2 + 1){
+                if(board[y2][x2] == 0) {
+                    retVal = 0;
+                }
+                else {
+                retVal = 1;
+                }
+            }
+            else if(x1 == x2 && y1 == y2 + 2){
+                if(board[y2][x2] == 0) {
+                    retVal = 0;
+                }
+                else {
+                retVal = 1;
+                }
+            }
+            //capture pawn
+            else if((x1 - x2 == 1 || x1 - x2 == -1) && y1 == y2 + 1) {
+                if(board[y2][x2] > 0 &&(board[y2][x2] < 7 || (board[y2][x2] < 16 && board[y2][x2] > 12))) {
+                retVal = 1;
+                }
+                else {
+                    retVal = 0;
+                }
+            }
+            else {
+                retVal = 0;
+            }
+        }
+    }
+    else if(turn == 1) {
+        if(board[y1][x1] == 6) { //black moved pawn checker
+            //move pawn 1 square
+            if(x1 == x2 && y1 == y2 - 1){
+                if(board[y2][x2] == 0) {
+                    retVal = 0;
+                }
+                else {
+                retVal = 1;
+                }
+            }
+            //capture pawn
+            else if((x1 - x2 == 1 || x1 - x2 == -1) && y1 == y2 - 1) {
+                if(board[y2][x2] > 7 && (board[y2][x2] > 13 && (board))) {
+                retVal = 1;
+            }
+            }
+            //en passant pawn
+            else if((board[y1][x1+1] == 19 || board[y1][x1-1] == 19)&&((y1 == y2 + 1 && ((x1 == x2 - 1)||(x1 == x2 + 1))))) {
+                retVal = 1;
+            }
+            else {
+                retVal = 0;
+            }
+        }
+        else if(board[y1][x1] == 18) { //white unmoved pawn checker
+            if(x1 == x2 && y1 == y2 + 1){
+                if(board[y2][x2] == 0) {
+                    retVal = 0;
+                }
+                else {
+                retVal = 1;
+                }
+            }
+            else if(x1 == x2 && y1 == y2 + 2){
+                if(board[y2][x2] == 0) {
+                    retVal = 0;
+                }
+                else {
+                retVal = 1;
+                }
+            }
+            //capture pawn
+            else if((x1 - x2 == 1 || x1 - x2 == -1) && y1 == y2 - 1) {
+                if((board[y1-1][x1-1] > 0 || board[y1-1][x1+1] > 0)||((board[y1-1][x1-1] > 12 && board[y1-1][x1+1] < 16)||(board[y1-1][x1+1] > 12 && board[y1-1][x1-1] < 16))) {
+                retVal = 1;
+                }
+            }
+            else {
+                retVal = 0;
+            }
+        }
+    }
+    return retVal;
 }
