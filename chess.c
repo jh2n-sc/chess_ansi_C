@@ -530,7 +530,6 @@ int move(int board[8][8], int y1, int x1, int y2, int x2, int turn) {
                 for(int j = -1; j < 2; j++) {
                     if(x2 == x1 + i && y2 == y1 + j) {
                         ver = 1;
-                        board[0][0] = 21;
                     }
                 }
             }
