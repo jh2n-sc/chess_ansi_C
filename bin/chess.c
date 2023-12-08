@@ -2060,3 +2060,2034 @@ void devDisplayBoard(int wsboard[8][8], int bsboard[8][8]) {
     }
     printf("a  b  c  d  e  f  g  h\n\n");
 }
+int shadowBoardChecker(int board[8][8], int x1, int y1, int x2, int y2, int turn)
+{   
+    int retVal = -1;
+    int mboard[8][8];
+    int vboard[8][8];
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            mboard[i][j] = board[i][j];
+        }
+    }
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            vboard[i][j] = 0;
+        }
+    }
+    Dmove(mboard, y1, x1, y2, x2);
+    for (int i = 0; i < 8; ++i)
+    {
+        for (int j = 0; j < 8; ++j)
+        {
+            if (turn == 0)
+            {
+                if (mboard[i][j] > 0 && mboard[i][j] < 11)
+                {
+                    // black king
+                    if (mboard[i][j] == 1 || mboard[i][j] == 7)
+                    {
+                        for (int y = -1; y < 2; y++)
+                        {
+                            for (int x = -1; x < 2; x++)
+                            {
+                                if (!((i + y > 7) || (i + y < 0)))
+                                {
+                                    if (!((j + x > 7) || (j + x < 0)))
+                                    {
+                                        vboard[i + y][j + x] = -1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // black queen
+                    else if (mboard[i][j] == 2)
+                    {
+                        // right down
+                        for (int x = j + 1, y = i + 1; x < 8 && y < 8; x++, y++)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                        // left down
+                        for (int x = j - 1, y = i + 1; x > -1 && y < 8; x--, y++)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                        // right up
+                        for (int x = j + 1, y = i - 1; x < 8 && y > -1; x++, y--)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                        // left up
+                        for (int x = j - 1, y = i - 1; x > -1 && y > -1; x--, y--)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                        // right
+                        for (int x = j + 1; x < 8; x++)
+                        {
+                            if (mboard[i][x] == 0)
+                            {
+                                vboard[i][x] = -1;
+                            }
+                            else if (mboard[i][x] > 0)
+                            {
+                                vboard[i][x] = -1;
+                                break;
+                            }
+                        }
+
+                        // down
+                        for (int y = i + 1; y < 8; y++)
+                        {
+                            if (mboard[y][j] == 0)
+                            {
+                                vboard[y][j] = -1;
+                            }
+                            else if (mboard[y][j] > 0)
+                            {
+                                vboard[y][j] = -1;
+                                break;
+                            }
+                        }
+
+                        // left
+                        for (int x = j - 1; x > -1; x--)
+                        {
+                            if (mboard[i][x] == 0)
+                            {
+                                vboard[i][x] = -1;
+                            }
+                            else if (mboard[i][x] > 0)
+                            {
+                                vboard[i][x] = -1;
+                                break;
+                            }
+                        }
+
+                        // up
+                        for (int y = i - 1; y > -1; y--)
+                        {
+                            if (mboard[y][j] == 0)
+                            {
+                                vboard[y][j] = -1;
+                            }
+                            else if (mboard[y][j] > 0)
+                            {
+                                vboard[y][j] = -1;
+                                break;
+                            }
+                        }
+                    }
+                    // black rook
+                    else if (mboard[i][j] == 3 || mboard[i][j] == 8)
+                    {
+                        // right
+                        for (int x = j + 1; x < 8; x++)
+                        {
+                            if (mboard[i][x] == 0)
+                            {
+                                vboard[i][x] = -1;
+                            }
+                            else if (mboard[i][x] > 0)
+                            {
+                                vboard[i][x] = -1;
+                                break;
+                            }
+                        }
+
+                        // down
+                        for (int y = i + 1; y < 8; y++)
+                        {
+                            if (mboard[y][j] == 0)
+                            {
+                                vboard[y][j] = -1;
+                            }
+                            else if (mboard[y][j] > 0)
+                            {
+                                vboard[y][j] = -1;
+                                break;
+                            }
+                        }
+
+                        // left
+                        for (int x = j - 1; x > -1; x--)
+                        {
+                            if (mboard[i][x] == 0)
+                            {
+                                vboard[i][x] = -1;
+                            }
+                            else if (mboard[i][x] > 0)
+                            {
+                                vboard[i][x] = -1;
+                                break;
+                            }
+                        }
+
+                        // up
+                        for (int y = i - 1; y > -1; y--)
+                        {
+                            if (mboard[y][j] == 0)
+                            {
+                                vboard[y][j] = -1;
+                            }
+                            else if (mboard[y][j] > 0)
+                            {
+                                vboard[y][j] = -1;
+                                break;
+                            }
+                        }
+                    }
+                    // black bishop
+                    else if (mboard[i][j] == 4)
+                    {
+                        // right down
+                        for (int x = j + 1, y = i + 1; x < 8 && y < 8; x++, y++)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                        // left down
+                        for (int x = j - 1, y = i + 1; x > -1 && y < 8; x--, y++)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                        // right up
+                        for (int x = j + 1, y = i - 1; x < 8 && y > -1; x++, y--)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                        // left up
+                        for (int x = j - 1, y = i - 1; x > -1 && y > -1; x--, y--)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                    }
+                    // black knight
+                    else if (mboard[i][j] == 5)
+                    {
+                        int arr[8] = {-1, -2, +1, +2, -1, +2, +1, -2};
+                        for (int x = 0, y = 7; x < 8 && y > -1; x++, y--)
+                        {
+                            // vboard[i+arr[y]][j+arr[x]] = -1;
+                            if (!((i + arr[y] > 7) || (i + arr[y] < 0)))
+                            {
+                                if (!((j + arr[x] > 7) || (j + arr[x] < 0)))
+                                {
+                                    vboard[i + arr[y]][j + arr[x]] = -1;
+                                }
+                            }
+                        }
+                    }
+                    // black pawn
+                    else if (mboard[i][j] == 6)
+                    {
+                        for (int x = -1; x < 2; x += 2)
+                        {
+                            if (!(((i + 1) > 7) || ((i + 1) < 0)))
+                            {
+                                if (!((j + x > 7) || (j + x < 0)))
+                                {
+                                    vboard[i + 1][j + x] = -1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (turn == 1)
+            {
+                // white pieces
+                if (mboard[i][j] > 11)
+                {
+                    if (mboard[i][j] == 21 || mboard[i][j] == 27)
+                    {
+                        for (int y = -1; y < 2; y++)
+                        {
+                            for (int x = -1; x < 2; x++)
+                            {
+                                if (!((i + y > 7) || (i + y < 0)))
+                                {
+                                    if (!((j + x > 7) || (j + x < 0)))
+                                    {
+                                        vboard[i + y][j + x] = -1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // white queen
+                    else if (mboard[i][j] == 22)
+                    {
+                        // right down
+                        for (int x = j + 1, y = i + 1; x < 8 && y < 8; x++, y++)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                        // left down
+                        for (int x = j - 1, y = i + 1; x > -1 && y < 8; x--, y++)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                        // right up
+                        for (int x = j + 1, y = i - 1; x < 8 && y > -1; x++, y--)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                        // left up
+                        for (int x = j - 1, y = i - 1; x > -1 && y > -1; x--, y--)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                        // right
+                        for (int x = j + 1; x < 8; x++)
+                        {
+                            if (mboard[i][x] == 0)
+                            {
+                                vboard[i][x] = -1;
+                            }
+                            else if (mboard[i][x] > 0)
+                            {
+                                vboard[i][x] = -1;
+                                break;
+                            }
+                        }
+
+                        // down
+                        for (int y = i + 1; y < 8; y++)
+                        {
+                            if (mboard[y][j] == 0)
+                            {
+                                vboard[y][j] = -1;
+                            }
+                            else if (mboard[y][j] > 0)
+                            {
+                                vboard[y][j] = -1;
+                                break;
+                            }
+                        }
+
+                        // left
+                        for (int x = j - 1; x > -1; x--)
+                        {
+                            if (mboard[i][x] == 0)
+                            {
+                                vboard[i][x] = -1;
+                            }
+                            else if (mboard[i][x] > 0)
+                            {
+                                vboard[i][x] = -1;
+                                break;
+                            }
+                        }
+
+                        // up
+                        for (int y = i - 1; y > -1; y--)
+                        {
+                            if (mboard[y][j] == 0)
+                            {
+                                vboard[y][j] = -1;
+                            }
+                            else if (mboard[y][j] > 0)
+                            {
+                                vboard[y][j] = -1;
+                                break;
+                            }
+                        }
+                    }
+                    // white rook
+                    else if (mboard[i][j] == 23 || mboard[i][j] == 28)
+                    {
+                        // right
+                        for (int x = j + 1; x < 8; x++)
+                        {
+                            if (mboard[i][x] == 0)
+                            {
+                                vboard[i][x] = -1;
+                            }
+                            else if (mboard[i][x] > 0)
+                            {
+                                vboard[i][x] = -1;
+                                break;
+                            }
+                        }
+
+                        // down
+                        for (int y = i + 1; y < 8; y++)
+                        {
+                            if (mboard[y][j] == 0)
+                            {
+                                vboard[y][j] = -1;
+                            }
+                            else if (mboard[y][j] > 0)
+                            {
+                                vboard[y][j] = -1;
+                                break;
+                            }
+                        }
+
+                        // left
+                        for (int x = j - 1; x > -1; x--)
+                        {
+                            if (mboard[i][x] == 0)
+                            {
+                                vboard[i][x] = -1;
+                            }
+                            else if (mboard[i][x] > 0)
+                            {
+                                vboard[i][x] = -1;
+                                break;
+                            }
+                        }
+
+                        // up
+                        for (int y = i - 1; y > -1; y--)
+                        {
+                            if (mboard[y][j] == 0)
+                            {
+                                vboard[y][j] = -1;
+                            }
+                            else if (mboard[y][j] > 0)
+                            {
+                                vboard[y][j] = -1;
+                                break;
+                            }
+                        }
+                    }
+                    // white bishop
+                    else if (mboard[i][j] == 24)
+                    {
+                        // right down
+                        for (int x = j + 1, y = i + 1; x < 8 && y < 8; x++, y++)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                        // left down
+                        for (int x = j - 1, y = i + 1; x > -1 && y < 8; x--, y++)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                        // right up
+                        for (int x = j + 1, y = i - 1; x < 8 && y > -1; x++, y--)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                        // left up
+                        for (int x = j - 1, y = i - 1; x > -1 && y > -1; x--, y--)
+                        {
+                            if (mboard[y][x] == 0)
+                            {
+                                vboard[y][x] = -1;
+                            }
+                            else if (mboard[y][x] > 0)
+                            {
+                                vboard[y][x] = -1;
+                                break;
+                            }
+                        }
+                    }
+                    // white knight
+                    else if (mboard[i][j] == 25)
+                    {
+                        int arr[8] = {-1, -2, +1, +2, -1, +2, +1, -2};
+                        for (int x = 0, y = 7; x < 8 && y > -1; x++, y--)
+                        {
+                            // vboard[i+arr[y]][j+arr[x]] = -1;
+                            if (!((i + arr[y] > 7) || (i + arr[y] < 0)))
+                            {
+                                if (!((j + arr[x] > 7) || (j + arr[x] < 0)))
+                                {
+                                    vboard[i + arr[y]][j + arr[x]] = -1;
+                                }
+                            }
+                        }
+                    }
+                    // white pawn
+                    else if (mboard[i][j] == 26)
+                    {
+                        for (int x = -1; x < 2; x += 2)
+                        {
+                            if (!(((i - 1) > 7) || ((i - 1) < 0)))
+                            {
+                                if (!((j + x > 7) || (j + x < 0)))
+                                {
+                                    vboard[i - 1][j + x] = -1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            if ((mboard[i][j] > 0 && mboard[i][j] < 11) && vboard[i][j] == -1)
+            {
+                vboard[i][j] = -2;
+            }
+        }
+    }
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            if ((mboard[i][j] > 11 && mboard[i][j] < 40) && vboard[i][j] == -1)
+            {
+                vboard[i][j] = -2;
+            }
+        }
+    }
+    if (turn == 0)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if (mboard[i][j] == 21 || mboard[i][j] == 27)
+                {
+                    if (!(vboard[i][j] < 0))
+                    {
+                        retVal = 1;
+                    }
+                }
+            }
+        }
+    }
+    else if (turn == 1)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if (mboard[i][j] == 1 || mboard[i][j] == 7)
+                {
+                    if (!(vboard[i][j] < 0))
+                    {
+                        retVal = 1;
+                    }
+                }
+            }
+        }
+    }
+    return retVal;
+}
+int chShadowBoardInit(int board[8][8], int wsboard[8][8], int bsboard[8][8], int x1, int y1, int x2, int y2, int ch, int turn)
+{
+    int retVal = 0;
+
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            wsboard[i][j] = 0;
+        }
+    }
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            bsboard[i][j] = 0;
+        }
+    }
+    if (ch == 1)
+    {
+        if (turn == 1)
+        {
+            if (board[y1][x1] > 0 && board[y1][x1] < 11)
+            {
+                // black king
+                if (board[y1][x1] == 1 || board[y1][x1] == 7)
+                {
+                    for (int y = -1; y < 2; y++)
+                    {
+                        for (int x = -1; x < 2; x++)
+                        {
+                            if (!((y1 + y > 7) || (y1 + y < 0)))
+                            {
+                                if (!((x1 + x > 7) || (x1 + x < 0)))
+                                {
+                                    if (!(board[y1 + y][x1 + x] > 0 && board[y1 + y][x1 + x] < 11)) {
+                                    bsboard[y1 + y][x1 + x] = -1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // black queen
+                else if (board[y1][x1] == 2)
+                {
+                    // right down
+                    for (int x = x1 + 1, y = y1 + 1; x < 8 && y < 8; x++, y++)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            bsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 21)
+                        {
+                            bsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            bsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                    // left down
+                    for (int x = x1 - 1, y = y1 + 1; x > -1 && y < 8; x--, y++)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            bsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 21)
+                        {
+                            bsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            bsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                    // right up
+                    for (int x = x1 + 1, y = y1 - 1; x < 8 && y > -1; x++, y--)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            bsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 21)
+                        {
+                            bsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            bsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                    // left up
+                    for (int x = x1 - 1, y = y1 - 1; x > -1 && y > -1; x--, y--)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            bsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 21)
+                        {
+                            bsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            bsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                    // right
+                    for (int x = x1 + 1; x < 8; x++)
+                    {
+                        if (board[y1][x] == 0)
+                        {
+                            bsboard[y1][x] = -1;
+                        }
+                        else if (board[y1][x] > 21)
+                        {
+                            bsboard[y1][x] = -2;
+                            break;
+                        }
+                        else if (board[y1][x] > 0 && board[y1][x] < 11)
+                        {
+                            bsboard[y1][x] = 0;
+                            break;
+                        }
+                    }
+
+                    // down
+                    for (int y = y1 + 1; y < 8; y++)
+                    {
+                        if (board[y][x1] == 0)
+                        {
+                            bsboard[y][x1] = -1;
+                        }
+                        else if (board[y][x1] > 21)
+                        {
+                            bsboard[y][x1] = -2;
+                            break;
+                        }
+                        else if (board[y][x1] > 0 && board[y][x1] < 11)
+                        {
+                            bsboard[y][x1] = 0;
+                            break;
+                        }
+                    }
+
+                    // left
+                    for (int x = x1 - 1; x > -1; x--)
+                    {
+                        if (board[y1][x] == 0)
+                        {
+                            bsboard[y1][x] = -1;
+                        }
+                        else if (board[y1][x] > 21)
+                        {
+                            bsboard[y1][x] = -2;
+                            break;
+                        }
+                        else if (board[y1][x] > 0 && board[y1][x] < 11)
+                        {
+                            bsboard[y1][x] = 0;
+                            break;
+                        }
+                    }
+
+                    // up
+                    for (int y = y1 - 1; y > -1; y--)
+                    {
+                        if (board[y][x1] == 0)
+                        {
+                            bsboard[y][x1] = -1;
+                        }
+                        else if (board[y][x1] > 21)
+                        {
+                            bsboard[y][x1] = -2;
+                            break;
+                        }
+                        else if (board[y][x1] > 0 && board[y][x1] < 11)
+                        {
+                            bsboard[y][x1] = 0;
+                            break;
+                        }
+                    }
+                }
+                // black rook
+                else if (board[y1][x1] == 3 || board[y1][x1] == 8)
+                {
+                    // right
+                    for (int x = x1 + 1; x < 8; x++)
+                    {
+                        if (board[y1][x] == 0)
+                        {
+                            bsboard[y1][x] = -1;
+                        }
+                        else if (board[y1][x] > 21)
+                        {
+                            bsboard[y1][x] = -2;
+                            break;
+                        }
+                        else if (board[y1][x] > 0 && board[y1][x] < 11)
+                        {
+                            bsboard[y1][x] = 0;
+                            break;
+                        }
+                    }
+
+                    // down
+                    for (int y = y1 + 1; y < 8; y++)
+                    {
+                        if (board[y][x1] == 0)
+                        {
+                            bsboard[y][x1] = -1;
+                        }
+                        else if (board[y][x1] > 21)
+                        {
+                            bsboard[y][x1] = -2;
+                            break;
+                        }
+                        else if (board[y][x1] > 0 && board[y][x1] < 11)
+                        {
+                            bsboard[y][x1] = 0;
+                            break;
+                        }
+                    }
+
+                    // left
+                    for (int x = x1 - 1; x > -1; x--)
+                    {
+                        if (board[y1][x] == 0)
+                        {
+                            bsboard[y1][x] = -1;
+                        }
+                        else if (board[y1][x] > 21)
+                        {
+                            bsboard[y1][x] = -2;
+                            break;
+                        }
+                        else if (board[y1][x] > 0 && board[y1][x] < 11)
+                        {
+                            bsboard[y1][x] = 0;
+                            break;
+                        }
+                    }
+
+                    // up
+                    for (int y = y1 - 1; y > -1; y--)
+                    {
+                        if (board[y][x1] == 0)
+                        {
+                            bsboard[y][x1] = -1;
+                        }
+                        else if (board[y][x1] > 21)
+                        {
+                            bsboard[y][x1] = -2;
+                            break;
+                        }
+                        else if (board[y][x1] > 0 && board[y][x1] < 11)
+                        {
+                            bsboard[y][x1] = 0;
+                            break;
+                        }
+                    }
+                }
+                // black bishop
+                else if (board[y1][x1] == 4)
+                {
+                    // right down
+                    for (int x = x1 + 1, y = y1 + 1; x < 8 && y < 8; x++, y++)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            bsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 21)
+                        {
+                            bsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            bsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                    // left down
+                    for (int x = x1 - 1, y = y1 + 1; x > -1 && y < 8; x--, y++)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            bsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 21)
+                        {
+                            bsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            bsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                    // right up
+                    for (int x = x1 + 1, y = y1 - 1; x < 8 && y > -1; x++, y--)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            bsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 21)
+                        {
+                            bsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            bsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                    // left up
+                    for (int x = x1 - 1, y = y1 - 1; x > -1 && y > -1; x--, y--)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            bsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 21)
+                        {
+                            bsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            bsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                }
+                // black knight
+                else if (board[y1][x1] == 5)
+                {
+                    int arr[8] = {-1, -2, +1, +2, -1, +2, +1, -2};
+                    for (int x = 0, y = 7; x < 8 && y > -1; x++, y--)
+                    {
+                        // bsboard[i+arr[y]][x1+arr[x]] = -1;
+                        if (!((y1 + arr[y] > 7) || (y1 + arr[y] < 0)))
+                        {
+                            if (!((x1 + arr[x] > 7) || (x1 + arr[x] < 0)))
+                            {
+                                if (board[y1 + arr[y]][x1 + arr[x]] == 0)
+                                {
+                                    bsboard[y1 + arr[y]][x1 + arr[x]] = -1;
+                                }
+                                else if (board[y1 + arr[y]][x1 + arr[x]] > 21)
+                                {
+                                    bsboard[y1 + arr[y]][x1 + arr[x]] = -2;
+                                }
+                                else if (board[y1 + arr[y]][x1 + arr[x]] > 0 && board[y1 + arr[y]][x1 + arr[x]] < 11)
+                                {
+                                    bsboard[y1 + arr[y]][x1 + arr[x]] = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+                // black pawn
+                else if (board[y1][x1] == 6)
+                {
+                    for (int x = -1; x < 2; x += 2)
+                    {
+                        if (!(((y1 + 1) > 7) || ((y1 + 1) < 0)))
+                        {
+                            if (!((x1 + x > 7) || (x1 + x < 0)))
+                            {
+                                if(!(board[y1 + 1][x1 + x] > 0 && board[y1 + 1][x1 + x] < 11)) {
+                                    bsboard[y1 + 1][x1 + x] = -1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // white pieces
+
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (board[i][j] > 11)
+                    {
+                        if (board[i][j] == 21 || board[i][j] == 27)
+                        {
+                            for (int y = -1; y < 2; y++)
+                            {
+                                for (int x = -1; x < 2; x++)
+                                {
+                                    if (!((i + y > 7) || (i + y < 0)))
+                                    {
+                                        if (!((j + x > 7) || (j + x < 0)))
+                                        {
+                                            wsboard[i + y][j + x] = -1;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        // white queen
+                        else if (board[i][j] == 22)
+                        {
+                            // right down
+                            for (int x = j + 1, y = i + 1; x < 8 && y < 8; x++, y++)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                            // left down
+                            for (int x = j - 1, y = i + 1; x > -1 && y < 8; x--, y++)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                            // right up
+                            for (int x = j + 1, y = i - 1; x < 8 && y > -1; x++, y--)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                            // left up
+                            for (int x = j - 1, y = i - 1; x > -1 && y > -1; x--, y--)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                            // right
+                            for (int x = j + 1; x < 8; x++)
+                            {
+                                if (board[i][x] == 0)
+                                {
+                                    wsboard[i][x] = -1;
+                                }
+                                else if (board[i][x] > 0)
+                                {
+                                    wsboard[i][x] = -1;
+                                    break;
+                                }
+                            }
+
+                            // down
+                            for (int y = i + 1; y < 8; y++)
+                            {
+                                if (board[y][j] == 0)
+                                {
+                                    wsboard[y][j] = -1;
+                                }
+                                else if (board[y][j] > 0)
+                                {
+                                    wsboard[y][j] = -1;
+                                    break;
+                                }
+                            }
+
+                            // left
+                            for (int x = j - 1; x > -1; x--)
+                            {
+                                if (board[i][x] == 0)
+                                {
+                                    wsboard[i][x] = -1;
+                                }
+                                else if (board[i][x] > 0)
+                                {
+                                    wsboard[i][x] = -1;
+                                    break;
+                                }
+                            }
+
+                            // up
+                            for (int y = i - 1; y > -1; y--)
+                            {
+                                if (board[y][j] == 0)
+                                {
+                                    wsboard[y][j] = -1;
+                                }
+                                else if (board[y][j] > 0)
+                                {
+                                    wsboard[y][j] = -1;
+                                    break;
+                                }
+                            }
+                        }
+                        // white rook
+                        else if (board[i][j] == 23 || board[i][j] == 28)
+                        {
+                            // right
+                            for (int x = j + 1; x < 8; x++)
+                            {
+                                if (board[i][x] == 0)
+                                {
+                                    wsboard[i][x] = -1;
+                                }
+                                else if (board[i][x] > 0)
+                                {
+                                    wsboard[i][x] = -1;
+                                    break;
+                                }
+                            }
+
+                            // down
+                            for (int y = i + 1; y < 8; y++)
+                            {
+                                if (board[y][j] == 0)
+                                {
+                                    wsboard[y][j] = -1;
+                                }
+                                else if (board[y][j] > 0)
+                                {
+                                    wsboard[y][j] = -1;
+                                    break;
+                                }
+                            }
+
+                            // left
+                            for (int x = j - 1; x > -1; x--)
+                            {
+                                if (board[i][x] == 0)
+                                {
+                                    wsboard[i][x] = -1;
+                                }
+                                else if (board[i][x] > 0)
+                                {
+                                    wsboard[i][x] = -1;
+                                    break;
+                                }
+                            }
+
+                            // up
+                            for (int y = i - 1; y > -1; y--)
+                            {
+                                if (board[y][j] == 0)
+                                {
+                                    wsboard[y][j] = -1;
+                                }
+                                else if (board[y][j] > 0)
+                                {
+                                    wsboard[y][j] = -1;
+                                    break;
+                                }
+                            }
+                        }
+                        // white bishop
+                        else if (board[i][j] == 24)
+                        {
+                            // right down
+                            for (int x = j + 1, y = i + 1; x < 8 && y < 8; x++, y++)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                            // left down
+                            for (int x = j - 1, y = i + 1; x > -1 && y < 8; x--, y++)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                            // right up
+                            for (int x = j + 1, y = i - 1; x < 8 && y > -1; x++, y--)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                            // left up
+                            for (int x = j - 1, y = i - 1; x > -1 && y > -1; x--, y--)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    wsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                        }
+                        // white knight
+                        else if (board[i][j] == 25)
+                        {
+                            int arr[8] = {-1, -2, +1, +2, -1, +2, +1, -2};
+                            for (int x = 0, y = 7; x < 8 && y > -1; x++, y--)
+                            {
+                                // wsboard[i+arr[y]][j+arr[x]] = -1;
+                                if (!((i + arr[y] > 7) || (i + arr[y] < 0)))
+                                {
+                                    if (!((j + arr[x] > 7) || (j + arr[x] < 0)))
+                                    {
+                                        wsboard[i + arr[y]][j + arr[x]] = -1;
+                                    }
+                                }
+                            }
+                        }
+                        // white pawn
+                        else if (board[i][j] == 26)
+                        {
+                            for (int x = -1; x < 2; x += 2)
+                            {
+                                if (!(((i - 1) > 7) || ((i - 1) < 0)))
+                                {
+                                    if (!((j + x > 7) || (j + x < 0)))
+                                    {
+                                        wsboard[i - 1][j + x] = -1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if ((board[y1][x1] == 1 || board[y1][x1] == 7) && bsboard[y2][x2] < 0)
+            {
+                if (wsboard[y2][x2] >= 0)
+                {
+                    retVal = 1;
+                }
+                else
+                {
+                }
+            }
+            else if (bsboard[y2][x2] < 0)
+            {
+                retVal = 1;
+            }
+        }
+        // white turn
+        else if (turn == 0)
+        {
+            if (board[y1][x1] > 11)
+            {
+                // white king
+                if (board[y1][x1] == 21 || board[y1][x1] == 27)
+                {
+                    for (int y = -1; y < 2; y++)
+                    {
+                        for (int x = -1; x < 2; x++)
+                        {
+                            if (!((y1 + y > 7) || (y1 + y < 0)))
+                            {
+                                if (!((x1 + x > 7) || (x1 + x < 0)))
+                                {
+                                    if(!(board[y1 + y][x1 + x] > 11)) {
+                                        wsboard[y1 + y][x1 + x] = -1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // white queen
+                else if (board[y1][x1] == 22)
+                {
+                    // right down
+                    for (int x = x1 + 1, y = y1 + 1; x < 8 && y < 8; x++, y++)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            wsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            wsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 11)
+                        {
+                            wsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                    // left down
+                    for (int x = x1 - 1, y = y1 + 1; x > -1 && y < 8; x--, y++)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            wsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            wsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 11)
+                        {
+                            wsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                    // right up
+                    for (int x = x1 + 1, y = y1 - 1; x < 8 && y > -1; x++, y--)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            wsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            wsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 11)
+                        {
+                            wsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                    // left up
+                    for (int x = x1 - 1, y = y1 - 1; x > -1 && y > -1; x--, y--)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            wsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            wsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 11)
+                        {
+                            wsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                    // right
+                    for (int x = x1 + 1; x < 8; x++)
+                    {
+                        if (board[y1][x] == 0)
+                        {
+                            wsboard[y1][x] = -1;
+                        }
+                        else if (board[y1][x] > 0 && board[y1][x] < 11)
+                        {
+                            wsboard[y1][x] = -2;
+                            break;
+                        }
+                        else if (board[y1][x] > 11)
+                        {
+                            wsboard[y1][x] = 0;
+                            break;
+                        }
+                    }
+
+                    // down
+                    for (int y = y1 + 1; y < 8; y++)
+                    {
+                        if (board[y][x1] == 0)
+                        {
+                            wsboard[y][x1] = -1;
+                        }
+                        else if (board[y][x1] > 0 && board[y][x1] < 11)
+                        {
+                            wsboard[y][x1] = -2;
+                            break;
+                        }
+                        else if (board[y][x1] > 11)
+                        {
+                            wsboard[y][x1] = 0;
+                            break;
+                        }
+                    }
+
+                    // left
+                    for (int x = x1 - 1; x > -1; x--)
+                    {
+                        if (board[y1][x] == 0)
+                        {
+                            wsboard[y1][x] = -1;
+                        }
+                        else if (board[y1][x] > 0 && board[y1][x] < 11)
+                        {
+                            wsboard[y1][x] = -2;
+                            break;
+                        }
+                        
+                        else if (board[y1][x] > 11) {
+                            wsboard[y1][x] = 0;
+                            break;
+                        }
+                    }
+
+                    // up
+                    for (int y = y1 - 1; y > -1; y--)
+                    {
+                        if (board[y][x1] == 0)
+                        {
+                            wsboard[y][x1] = -1;
+                        }
+                        else if (board[y][x1] > 0 && board[y][x1] < 11)
+                        {
+                            wsboard[y][x1] = -2;
+                            break;
+                        }
+                        else if (board[y][x1] > 11)
+                        {
+                            wsboard[y][x1] = 0;
+                            break;
+                        }
+                    }
+                }
+                // white rook
+                else if (board[y1][x1] == 23 || board[y1][x1] == 28)
+                {
+                    // right
+                    for (int x = x1 + 1; x < 8; x++)
+                    {
+                        if (board[y1][x] == 0)
+                        {
+                            wsboard[y1][x] = -1;
+                        }
+                        else if (board[y1][x] > 0 && board[y1][x] < 11)
+                        {
+                            wsboard[y1][x] = -2;
+                            break;
+                        }
+                        else if (board[y1][x] > 11)
+                        {
+                            wsboard[y1][x] = 0;
+                            break;
+                        }
+                    }
+
+                    // down
+                    for (int y = y1 + 1; y < 8; y++)
+                    {
+                        if (board[y][x1] == 0)
+                        {
+                            wsboard[y][x1] = -1;
+                        }
+                        else if (board[y][x1] > 0 && board[y][x1] < 11)
+                        {
+                            wsboard[y][x1] = -2;
+                            break;
+                        }
+                        else if (board[y][x1] > 11)
+                        {
+                            wsboard[y][x1] = 0;
+                            break;
+                        }
+                    }
+
+                    // left
+                    for (int x = x1 - 1; x > -1; x--)
+                    {
+                        if (board[y1][x] == 0)
+                        {
+                            wsboard[y1][x] = -1;
+                        }
+                        else if (board[y1][x] > 0 && board[y1][x] < 11)
+                        {
+                            wsboard[y1][x] = -2;
+                            break;
+                        }
+                        else if (board[y1][x] > 11)
+                        {
+                            wsboard[y1][x] = 0;
+                            break;
+                        }
+                    }
+
+                    // up
+                    for (int y = y1 - 1; y > -1; y--)
+                    {
+                        if (board[y][x1] == 0)
+                        {
+                            wsboard[y][x1] = -1;
+                        }
+                        else if (board[y][x1] > 0 && board[y][x1] < 11)
+                        {
+                            wsboard[y][x1] = -2;
+                            break;
+                        }
+                        else if (board[y][x1] > 11)
+                        {
+                            wsboard[y][x1] = 0;
+                            break;
+                        }
+                    }
+                }
+                // white bishop
+                else if (board[y1][x1] == 24)
+                {
+                    // right down
+                    for (int x = x1 + 1, y = y1 + 1; x < 8 && y < 8; x++, y++)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            wsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            wsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 11)
+                        {
+                            wsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                    // left down
+                    for (int x = x1 - 1, y = y1 + 1; x > -1 && y < 8; x--, y++)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            wsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            wsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 11)
+                        {
+                            wsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                    // right up
+                    for (int x = x1 + 1, y = y1 - 1; x < 8 && y > -1; x++, y--)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            wsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            wsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 11)
+                        {
+                            wsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                    // left up
+                    for (int x = x1 - 1, y = y1 - 1; x > -1 && y > -1; x--, y--)
+                    {
+                        if (board[y][x] == 0)
+                        {
+                            wsboard[y][x] = -1;
+                        }
+                        else if (board[y][x] > 0 && board[y][x] < 11)
+                        {
+                            wsboard[y][x] = -2;
+                            break;
+                        }
+                        else if (board[y][x] > 11)
+                        {
+                            wsboard[y][x] = 0;
+                            break;
+                        }
+                    }
+                }
+                // white knight
+                else if (board[y1][x1] == 25)
+                {
+                    int arr[8] = {-1, -2, +1, +2, -1, +2, +1, -2};
+                    for (int x = 0, y = 7; x < 8 && y > -1; x++, y--)
+                    {
+                        // wsboard[i+arr[y]][x1+arr[x]] = -1;
+                        if (!((y1 + arr[y] > 7) || (y1 + arr[y] < 0)))
+                        {
+                            if (!((x1 + arr[x] > 7) || (x1 + arr[x] < 0)))
+                            {
+                                if (board[y1 + arr[y]][x1 + arr[x]] == 0)
+                                {
+                                    wsboard[y1 + arr[y]][x1 + arr[x]] = -1;
+                                }
+                                else if (board[y1 + arr[y]][x1 + arr[x]] > 0 && board[y1 + arr[y]][x1 + arr[x]] < 11)
+                                {
+                                    wsboard[y1 + arr[y]][x1 + arr[x]] = -2;
+                                }
+                                else if (board[y1 + arr[y]][x1 + arr[x]] > 21)
+                                {
+                                    wsboard[y1 + arr[y]][x1 + arr[x]] = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+                // white pawn
+                else if (board[y1][x1] == 26)
+                {
+                    for (int x = -1; x < 2; x += 2)
+                    {
+                        if (!(((y1 + 1) > 7) || ((y1 + 1) < 0)))
+                        {
+                            if (!((x1 + x > 7) || (x1 + x < 0)))
+                            {
+                                if (!(board[y1 - 1][x1 + x] > 11)) {
+                                wsboard[y1 - 1][x1 + x] = -1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // black pieces
+
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (board[i][j] < 11)
+                    {
+                        if (board[i][j] == 1 || board[i][j] == 7)
+                        {
+                            for (int y = -1; y < 2; y++)
+                            {
+                                for (int x = -1; x < 2; x++)
+                                {
+                                    if (!((i + y > 7) || (i + y < 0)))
+                                    {
+                                        if (!((j + x > 7) || (j + x < 0)))
+                                        {
+                                            bsboard[i + y][j + x] = -1;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        // black queen
+                        else if (board[i][j] == 2)
+                        {
+                            // right down
+                            for (int x = j + 1, y = i + 1; x < 8 && y < 8; x++, y++)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                            // left down
+                            for (int x = j - 1, y = i + 1; x > -1 && y < 8; x--, y++)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                            // right up
+                            for (int x = j + 1, y = i - 1; x < 8 && y > -1; x++, y--)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                            // left up
+                            for (int x = j - 1, y = i - 1; x > -1 && y > -1; x--, y--)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                            // right
+                            for (int x = j + 1; x < 8; x++)
+                            {
+                                if (board[i][x] == 0)
+                                {
+                                    bsboard[i][x] = -1;
+                                }
+                                else if (board[i][x] > 0)
+                                {
+                                    bsboard[i][x] = -1;
+                                    break;
+                                }
+                            }
+
+                            // down
+                            for (int y = i + 1; y < 8; y++)
+                            {
+                                if (board[y][j] == 0)
+                                {
+                                    bsboard[y][j] = -1;
+                                }
+                                else if (board[y][j] > 0)
+                                {
+                                    bsboard[y][j] = -1;
+                                    break;
+                                }
+                            }
+
+                            // left
+                            for (int x = j - 1; x > -1; x--)
+                            {
+                                if (board[i][x] == 0)
+                                {
+                                    bsboard[i][x] = -1;
+                                }
+                                else if (board[i][x] > 0)
+                                {
+                                    bsboard[i][x] = -1;
+                                    break;
+                                }
+                            }
+
+                            // up
+                            for (int y = i - 1; y > -1; y--)
+                            {
+                                if (board[y][j] == 0)
+                                {
+                                    bsboard[y][j] = -1;
+                                }
+                                else if (board[y][j] > 0)
+                                {
+                                    bsboard[y][j] = -1;
+                                    break;
+                                }
+                            }
+                        }
+                        // black rook
+                        else if (board[i][j] == 3 || board[i][j] == 8)
+                        {
+                            // right
+                            for (int x = j + 1; x < 8; x++)
+                            {
+                                if (board[i][x] == 0)
+                                {
+                                    bsboard[i][x] = -1;
+                                }
+                                else if (board[i][x] > 0)
+                                {
+                                    bsboard[i][x] = -1;
+                                    break;
+                                }
+                            }
+
+                            // down
+                            for (int y = i + 1; y < 8; y++)
+                            {
+                                if (board[y][j] == 0)
+                                {
+                                    bsboard[y][j] = -1;
+                                }
+                                else if (board[y][j] > 0)
+                                {
+                                    bsboard[y][j] = -1;
+                                    break;
+                                }
+                            }
+
+                            // left
+                            for (int x = j - 1; x > -1; x--)
+                            {
+                                if (board[i][x] == 0)
+                                {
+                                    bsboard[i][x] = -1;
+                                }
+                                else if (board[i][x] > 0)
+                                {
+                                    bsboard[i][x] = -1;
+                                    break;
+                                }
+                            }
+
+                            // up
+                            for (int y = i - 1; y > -1; y--)
+                            {
+                                if (board[y][j] == 0)
+                                {
+                                    bsboard[y][j] = -1;
+                                }
+                                else if (board[y][j] > 0)
+                                {
+                                    bsboard[y][j] = -1;
+                                    break;
+                                }
+                            }
+                        }
+                        // black bishop
+                        else if (board[i][j] == 4)
+                        {
+                            // right down
+                            for (int x = j + 1, y = i + 1; x < 8 && y < 8; x++, y++)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                            // left down
+                            for (int x = j - 1, y = i + 1; x > -1 && y < 8; x--, y++)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                            // right up
+                            for (int x = j + 1, y = i - 1; x < 8 && y > -1; x++, y--)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                            // left up
+                            for (int x = j - 1, y = i - 1; x > -1 && y > -1; x--, y--)
+                            {
+                                if (board[y][x] == 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                }
+                                else if (board[y][x] > 0)
+                                {
+                                    bsboard[y][x] = -1;
+                                    break;
+                                }
+                            }
+                        }
+                        // black knight
+                        else if (board[i][j] == 5)
+                        {
+                            int arr[8] = {-1, -2, +1, +2, -1, +2, +1, -2};
+                            for (int x = 0, y = 7; x < 8 && y > -1; x++, y--)
+                            {
+                                // bsboard[i+arr[y]][j+arr[x]] = -1;
+                                if (!((i + arr[y] > 7) || (i + arr[y] < 0)))
+                                {
+                                    if (!((j + arr[x] > 7) || (j + arr[x] < 0)))
+                                    {
+                                        bsboard[i + arr[y]][j + arr[x]] = -1;
+                                    }
+                                }
+                            }
+                        }
+                        // black pawn
+                        else if (board[i][j] == 6)
+                        {
+                            for (int x = -1; x < 2; x += 2)
+                            {
+                                if (!(((i - 1) > 7) || ((i - 1) < 0)))
+                                {
+                                    if (!((j + x > 7) || (j + x < 0)))
+                                    {
+                                        bsboard[i + 1][j + x] = -1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if ((board[y1][x1] == 21 || board[y1][x1] == 27) && wsboard[y2][x2] < 0)
+            {
+                if (bsboard[y2][x2] >= 0)
+                {
+                    retVal = 1;
+                }
+                else
+                {
+                }
+            }
+            else if (wsboard[y2][x2] < 0)
+            {
+                retVal = 1;
+            }
+        }
+        /* for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                if((board[i][j] > 0 && board[i][j] < 11) && bsboard[i][j] == -1) {
+                    bsboard[i][j] = -2;
+                }
+            }
+        }
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                if((board[i][j] > 11 && board[i][j] < 40) && wsboard[i][j] == -1) {
+                    wsboard[i][j] = -2;
+                }
+            }
+        } */
+        /* for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                if((board[i][j] > 0 && board[i][j] < 11) && (bsboard[i][j] != -1 && bsboard[i][j] != -2)) {
+                    bsboard[i][j] = - 10;
+                }
+            }
+        } */
+        if (x1 == -10 && y1 == -10)
+        {
+            retVal = 1;
+        }
+    }
+    else if (ch == 0)
+    {
+    }
+    return retVal;
