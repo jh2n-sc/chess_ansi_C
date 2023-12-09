@@ -120,6 +120,7 @@ int main(void)
 }
 void addEntity(int board[8][8], int y1, int x1, int value)
 {
+    // for stuff
     board[y1][x1] = value;
 }
 int chShadowBoardInit(int board[8][8], int wsboard[8][8], int bsboard[8][8], int x1, int y1, int x2, int y2, int turn)
