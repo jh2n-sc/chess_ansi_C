@@ -1,4 +1,35 @@
 # chess_ansi_C
-This is a small project by my broskies,
+## Created in C as a small project to entertain myself and to push the boundaries of my capabilities
 
-This is currently on its prototype version and it is not very stable to use, But have fun I guess.
+This is a small project by my(self 😔);
+
+This project can be used as an example on how hard it is to write a code in one file. It is strongly recommended to use libraries and such to avoid confusion when making usable code.
+
+
+This project demonstrates the following:
+
+* How arrays work
+* Why it is important to document everything in your code
+* When to make another function
+* How important it is to stick with the basics in order to avoid headaches and insomnia
+
+
+## How to compile the program 
+
+If you are an IT / CompSci student then you probably don't need this but if you still are but you don't know then:
+
+1. Clone this project using git
+2. Download gcc compiler or clang
+3. Run this code using terminal(in bash, cmd, powershell) or you can compile this on .exe to run it on windows(it would not work!)
+
+
+## There is a bug!?
+
+If you want to improve this project, please submit an issue above so that I would be aware and try to make it happen. I wholeheartedly appreciate every contribution.
+
+
+## Issues 
+
+I still don't know what issue is there but maybe some other time??
+
+
