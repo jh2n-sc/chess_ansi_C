@@ -30,7 +30,7 @@ If you want to improve this project, please submit an issue above so that I woul
 
 ## Issues 
 
-I still don't know what issue is there but maybe some other time??
+I still don't know what issue is there but maybe some other time?
 
 ## How it works
 
