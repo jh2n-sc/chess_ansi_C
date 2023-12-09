@@ -34,4 +34,4 @@ I still don't know what issue is there but maybe some other time??
 
 ## How it works
 
-I have no idea how for now, I have no time to document everything because the code itself is complicated, but I would like to create a documentation for others to see. But for now, let's keep it as it is.
+I have no idea how for now, I have no time to document everything because the code itself is complicated, but I would like to create a documentation for others to see, but for now, let's keep it as it is.
