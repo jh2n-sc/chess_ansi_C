@@ -85,11 +85,33 @@ int main(void)
             printf("Press any key to continue.");
             getchar();
         }
-        if (turn == 0) {
-            turn = 1;
-        }
-        else {
+        if (turn == 1)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (board[i][j] == 30)
+                    {
+                        board[i][j] = 26;
+                    }
+                }
+            }
             turn = 0;
+        }
+        else if (turn == 0)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (board[i][j] == 10)
+                    {
+                        board[i][j] = 6;
+                    }
+                }
+            }
+            turn = 1;
         }
         system("clear");
         inv = 1;
@@ -842,12 +864,13 @@ int chShadowBoardInit(int board[8][8], int wsboard[8][8], int bsboard[8][8], int
                         retVal = 1;
                         return retVal;
                     }
-                    else {
-                        return  0;
+                    else
+                    {
+                        return 0;
                     }
                 }
             }
-            else if (x2 == - 20)
+            else if (x2 == -20)
             {
                 for (int kk = x1 - 1; kk > 0; kk--)
                 {
@@ -863,7 +886,8 @@ int chShadowBoardInit(int board[8][8], int wsboard[8][8], int bsboard[8][8], int
                         retVal = 1;
                         return retVal;
                     }
-                    else {
+                    else
+                    {
                         return 0;
                     }
                 }
@@ -1263,7 +1287,7 @@ int chShadowBoardInit(int board[8][8], int wsboard[8][8], int bsboard[8][8], int
             }
             else if (board[y1][x1] == 29)
             {
-                for (int x = - 1; x < 2; x += 2)
+                for (int x = -1; x < 2; x += 2)
                 {
                     if (!(((y1 - 1) > 7) || ((y1 - 1) < 0)))
                     {
@@ -1621,7 +1645,6 @@ int chShadowBoardInit(int board[8][8], int wsboard[8][8], int bsboard[8][8], int
                 }
             }
         }
-        
     }
     if (x1 == x2 && y1 == y2)
     {
@@ -2654,14 +2677,9 @@ ret:
 }
 void move(int board[8][8], int y1, int x1, int y2, int x2)
 {
+    int inv = 0;
     int tmp;
-    if (!(y2 < 0 || x2 < 0))
-    {
-        tmp = board[y1][x1];
-        board[y2][x2] = tmp;
-        board[y1][x1] = 0;
-    }
-    else if (y2 < 0 && x2 < 0)
+    if (y2 < 0 && x2 < 0)
     {
         if (board[y1][x1] == 7)
         {
@@ -2697,30 +2715,49 @@ void move(int board[8][8], int y1, int x1, int y2, int x2)
                 addEntity(board, 7, 3, 23);
             }
         }
+        inv = 1;
     }
-    if (board[y1][x1] == 9 && y2 - y1 == 2) {
+    if (board[y1][x1] == 9 && y2 - y1 == 2)
+    {
         board[y1][x1] = 0;
         board[y2][x2] = 10;
+        inv = 1;
     }
-    else if (board[y1][x1] == 29 && y2 - y1 == 2) {
+    else if (board[y1][x1] == 29 && y1 - y2 == 2)
+    {
         board[y1][x1] = 0;
-        board[y2][x2] = 10;
+        board[y2][x2] = 30;
+        inv = 1;
     }
-    if (board[y1][x1] == 7) {
+    if (board[y1][x1] == 7)
+    {
         board[y1][x1] = 0;
         board[y2][x2] = 1;
+        inv = 1;
     }
-    else if (board[y1][x1] == 27) {
+    else if (board[y1][x1] == 27)
+    {
         board[y1][x1] = 0;
         board[y2][x2] = 21;
+        inv = 1;
     }
-    if (board[y1][x1] == 8) {
+    if (board[y1][x1] == 8)
+    {
         board[y1][x1] = 0;
         board[y2][x2] = 3;
+        inv = 1;
     }
-    else if (board[y1][x1] == 28) {
+    else if (board[y1][x1] == 28)
+    {
         board[y1][x1] = 0;
         board[y2][x2] = 28;
+        inv = 1;
+    }
+    if (!(y2 < 0 || x2 < 0) && inv == 0)
+    {
+        tmp = board[y1][x1];
+        board[y2][x2] = tmp;
+        board[y1][x1] = 0;
     }
 }
 int promotion(int board[8][8], int turn)
