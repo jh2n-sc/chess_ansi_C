@@ -73,6 +73,8 @@ int main(void)
         y2 = 0;
         if (mateChecker(board, turn) == 1)
         {
+            system("clear");
+            displayBoard(board);
             printf("Checkmate: by %s\n", strMove[turn]);
             getchar();
             printf("Press any key to continue.");
@@ -80,6 +82,8 @@ int main(void)
         }
         else if (mateChecker(board, turn) == 2)
         {
+            system("clear");
+            displayBoard(board);
             printf("Draw: by stalemate\n");
             getchar();
             printf("Press any key to continue.");
@@ -915,7 +919,7 @@ int chShadowBoardInit(int board[8][8], int wsboard[8][8], int bsboard[8][8], int
                         {
                             if (!((x1 + x > 7) || (x1 + x < 0)))
                             {
-                                if (!(board[y1 + y][x1 + x] > 0 && board[y1 + y][x1 + x] < 11))
+                                if (board[y1 + y][x1 + x] < 11)
                                 {
                                     wsboard[y1 + y][x1 + x] = -1;
                                 }
