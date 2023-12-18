@@ -79,6 +79,7 @@ int main(void)
             getchar();
             printf("Press any key to continue.");
             getchar();
+            break;
         }
         else if (mateChecker(board, turn) == 2)
         {
@@ -88,6 +89,7 @@ int main(void)
             getchar();
             printf("Press any key to continue.");
             getchar();
+            break;
         }
         if (turn == 1)
         {
